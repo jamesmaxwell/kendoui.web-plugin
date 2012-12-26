@@ -20,8 +20,9 @@
 			<img id="tshirt" src="../../content/web/combobox/tShirt.png" />
             <div id="options">
 			<h3>T-shirt Fabric</h3>
-            <input id="input" placeholder="Select fabric..." />
-
+            <input id="input" value="1,2,4" placeholder="Select fabric..." />
+			<h3>Other Choice</h3>
+			<input id="inputOther" value="1"/>
             <h3>T-shirt Size</h3>
             <select id="select" placeholder="Select size...">
 				<option>X-Small</option>
@@ -81,6 +82,17 @@
                             { text: "Cotton", value: "1" },
                             { text: "Polyester", value: "2" },
                             { text: "Cotton/Polyester", value: "3" },
+							{ text: "Cotton/Polyester", value: "31" },
+							{ text: "Cotton/Polyester", value: "32" },
+							{ text: "Cotton/Polyester", value: "33" },
+							{ text: "Cotton/Polyester", value: "34" },
+							{ text: "Cotton/Polyester", value: "35" },
+							{ text: "Cotton/Polyester", value: "36" },
+							{ text: "Cotton/Polyester", value: "37" },
+							{ text: "Cotton/Polyester", value: "38" },
+							{ text: "Cotton/Polyester", value: "39" },
+							{ text: "Cotton/Polyester", value: "30" },
+							{ text: "Cotton/Polyester", value: "311" },
                             { text: "Rib Knit", value: "4" }
                         ],
                         filter: "contains",
@@ -88,6 +100,15 @@
                         index: 3,
 						allText: 'all item'
                     });
+					
+					$('#inputOther').kendoComboBox({
+						dataTextField: 'text',
+						dataValueField: 'value',
+						dataSource: [
+							{ text: 'Cotton', value: 1 },
+							{ text: 'Polyester', value: 2 }
+						]
+					});
 
                     // create ComboBox from select HTML element
                     $("#select").kendoComboBox();
@@ -95,7 +116,7 @@
 					var input = $("#input").data("kendoMutiComboBox");
 					var select = $("#select").data("kendoComboBox");
 					
-					input.value(2);
+					//input.value(2);
 
 					$("#get").click(function() {
 						var v = input.value();

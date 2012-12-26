@@ -13,12 +13,12 @@
 	STATE_SELECTED = "k-state-selected",
     STATE_FILTER = "filter",
     STATE_ACCEPT = "accept",
-	ALL_HEIGHT = 25;
+	ALLCHK_HEIGHT = 25,
+	DEFAULT_HEIGHT = 200;
 
     var MutiComboBox = ComboBox.extend({
         init: function (element, options) {
             var that = this,
-			h,
 			selAll,
 			allText = options.allText || that.options.allText;
 
@@ -26,11 +26,11 @@
             ComboBox.fn.init.call(that, element, options);
 
             selAll = $('<div class="k-reset"/>')
-				.height(ALL_HEIGHT)
-				.css({ 'border-bottom': '1px solid #fff', 'margin-bottom': '2px', 'padding-left': '5px' })
+				.height(ALLCHK_HEIGHT)
+				.css({ 'border-bottom': '1px solid #fff', 'padding-bottom': '1px', 'padding-left': '5px' })
 				.append('<label><input type="checkbox" name="_cmbAll"/>' + allText + '</label>')
 				.prependTo(that.list);
-
+			
             selAll.find('input').on('click', function (e) {
                 that.list.find('input').prop('checked', $(this).prop('checked'));
                 that._select(that.list.find('li').get(0));
@@ -64,6 +64,47 @@
             }
 
             that.input[0].value = texts.join(',');
+			that._accessor(values.join(','), 0);
+        },
+		
+		value: function(value) {
+            var that = this,
+                idx;
+
+            if (value !== undefined) {
+                if (value !== null) {
+                    value = value.toString();
+                }
+
+                that.setValue(value);
+            } else {
+                return that._accessor();
+            }
+        },		
+		
+		open: function() {
+            var that = this,
+				ulHeight,
+                serverFiltering = that.dataSource.options.serverFiltering;
+
+            if (that.popup.visible()) {
+                return;
+            }
+
+            if (!that.ul[0].firstChild || (that._state === STATE_ACCEPT && !serverFiltering)) {
+                that._open = true;
+                that._state = STATE_REBIND;
+                that._filterSource();
+            } else {
+                that.popup.open();
+                that._scroll(that._current);
+				
+				//reset height, origion is 100%
+				if(that.list.height() >= 200){
+					ulHeight = that.options.height ? that.options.height : DEFAULT_HEIGHT;
+					that.ul.height(ulHeight - ALLCHK_HEIGHT);
+				}
+            }
         },
 
         _click: function (e) {
